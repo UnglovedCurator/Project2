@@ -1,73 +1,76 @@
 body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
 }
 
-.btn {
-    padding: 20px 40px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+section {
+    padding: 20px;
+    text-align: center;
+}
+
+.interactive-button {
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
     background-color: #3498db;
-    color: white;
-    transition: all 0.3s ease;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    transform: scale(1.05);
+.interactive-button:hover {
+    background-color: #2980b9;
 }
 
-/* Animation Classes */
-.pulse {
-    animation: pulse 1s ease-in-out;
+.interactive-button:active {
+    transform: scale(0.95);
 }
 
-.shake {
-    animation: shake 0.5s ease-in-out;
+#dynamic-text {
+    font-size: 18px;
+    margin-bottom: 20px;
 }
 
-.rotate {
-    animation: rotate 1s ease-in-out;
+.gradient-box {
+    width: 200px;
+    height: 100px;
+    margin: 20px auto;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    border-radius: 10px;
 }
 
-.rainbow {
-    animation: rainbow 1s ease-in-out;
-}
-
-/* Keyframes */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-}
-
-@keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes rainbow {
-    0% { background-color: #ff0000; }
-    20% { background-color: #ff8000; }
-    40% { background-color: #ffff00; }
-    60% { background-color: #00ff00; }
-    80% { background-color: #0000ff; }
-    100% { background-color: #8000ff; }
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
