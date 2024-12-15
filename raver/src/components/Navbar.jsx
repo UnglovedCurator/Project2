@@ -13,8 +13,43 @@ const Nav = styled.nav`
 const NavItems = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+`;
+
+const Logo = styled.div`
+  color: var(--color-accent-1);
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const MenuItems = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const MenuItem = styled.a`
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  
+  &:hover {
+    color: var(--color-accent-1);
+  }
+`;
+
+const TicketButton = styled.button`
+  background: var(--color-accent-1);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: black;
+  cursor: pointer;
+  
+  &:hover {
+    background: var(--color-accent-2);
+  }
 `;
 
 const Navbar = () => {
