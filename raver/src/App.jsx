@@ -1,4 +1,4 @@
-import GlobalStyles from './styles/GlobalStyles';
+import GlobalStyles from '/src/styles/GlobalStyles.jsx';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 
@@ -8,7 +8,6 @@ function App() {
       <GlobalStyles />
       <Navbar />
       <Hero />
-      {/* Add more sections later */}
     </>
   );
 }
