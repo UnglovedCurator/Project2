@@ -14,39 +14,10 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+  body {
     font-family: 'Arial', sans-serif;
     background-color: var(--color-primary);
     color: white;
-    overflow-x: hidden;
-  }
-
-  #root {
-    width: 100%;
-    height: 100%;
-  }
-
-  button {
-    font-family: inherit;
-  }
-
-  /* Add some basic animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Add smooth scrolling */
-  html {
-    scroll-behavior: smooth;
   }
 `;
 

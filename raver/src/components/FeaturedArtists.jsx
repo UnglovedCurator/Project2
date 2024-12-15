@@ -6,6 +6,17 @@ const ArtistsSection = styled.section`
   background: var(--color-secondary);
 `;
 
+const SectionTitle = styled.h2`  // Add this styled component
+  text-align: center;
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  
+  span {
+    color: var(--color-accent-1);
+  }
+`;
+
 const ArtistsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -48,10 +59,10 @@ const FeaturedArtists = () => {
     {
       id: 1,
       name: "DJ Thunder",
-      image: "/path-to-image.jpg",
+      image: "https://via.placeholder.com/300", // Placeholder image for testing
       genre: "Techno",
     },
-    // Add more artists
+    // Add more artists as needed
   ];
 
   return (
