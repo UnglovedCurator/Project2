@@ -1,15 +1,28 @@
 import styled from 'styled-components';
 import { useState, useEffect, useRef } from 'react';
-import { FaCalendarAlt, FaUsers, FaImages, FaInfoCircle, FaTicketAlt } from 'react-icons/fa';
+import {
+  FaCalendarAlt,
+  FaUsers,
+  FaImages,
+  FaInfoCircle,
+  FaTicketAlt,
+  FaBars,
+  FaTimes,
+} from 'react-icons/fa';
 
 const Nav = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(0, 0, 15, 0.9);
+  background: transparent;
   backdrop-filter: blur(5px);
   padding: 1rem;
   z-index: 1000;
+  transition: background 0.3s ease;
+
+  &.scrolled {
+    background: rgba(0, 0, 15, 0.9);
+  }
 `;
 
 const NavItems = styled.div`
@@ -22,14 +35,27 @@ const NavItems = styled.div`
 
 const Logo = styled.div`
   color: var(--color-accent-1);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
+  font-family: 'Monoton', cursive;
+  cursor: pointer;
 `;
 
 const MenuItems = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 15, 0.9);
+    padding: 1rem;
+  }
 `;
 
 const MenuItem = styled.a`
@@ -40,6 +66,8 @@ const MenuItem = styled.a`
   align-items: center;
   gap: 0.5rem;
   transition: color 0.2s ease;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
 
   &:hover {
     color: var(--color-accent-1);
@@ -47,6 +75,17 @@ const MenuItem = styled.a`
 
   &.active {
     color: var(--color-accent-1);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.5rem;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
@@ -61,22 +100,47 @@ const TicketButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   transition: background 0.2s ease;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
 
   &:hover {
     background: var(--color-accent-2);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
   }
 `;
 
 const Indicator = styled.div`
   position: absolute;
   bottom: 0;
+  left: 0;
   height: 2px;
   background-color: var(--color-accent-1);
   transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const HamburgerIcon = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
 `;
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('hero');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const indicatorRef = useRef(null);
   const heroRef = useRef(null);
   const eventsRef = useRef(null);
@@ -98,22 +162,30 @@ const Navbar = () => {
         const ticketsTop = ticketsRef.current?.offsetTop;
         const scrollPosition = window.scrollY + window.innerHeight / 4;
 
-        if (scrollPosition >= heroTop && scrollPosition < eventsTop) {
-          setActiveSection('hero');
-        } else if (scrollPosition >= eventsTop && scrollPosition < artistsTop) {
-          setActiveSection('events');
+        let newActiveSection = 'hero';
+
+        if (scrollPosition >= eventsTop && scrollPosition < artistsTop) {
+          newActiveSection = 'events';
         } else if (scrollPosition >= artistsTop && scrollPosition < galleryTop) {
-          setActiveSection('artists');
+          newActiveSection = 'artists';
         } else if (scrollPosition >= galleryTop && scrollPosition < aboutTop) {
-          setActiveSection('gallery');
+          newActiveSection = 'gallery';
         } else if (scrollPosition >= aboutTop && scrollPosition < ticketsTop) {
-          setActiveSection('about');
+          newActiveSection = 'about';
         } else if (scrollPosition >= ticketsTop) {
-          setActiveSection('tickets');
-        } else {
-          setActiveSection('hero');
+          newActiveSection = 'tickets';
+        }
+
+        if (newActiveSection !== activeSection) {
+          setActiveSection(newActiveSection);
         }
       }, 50);
+
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -121,7 +193,7 @@ const Navbar = () => {
       clearTimeout(scrollTimeout);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [activeSection]);
 
   useEffect(() => {
     const activeItem = document.querySelector(`.menu-item.active`);
@@ -133,21 +205,31 @@ const Navbar = () => {
 
   const handleClick = (section) => {
     setActiveSection(section);
+    setIsOpen(false);
     const sectionElement = document.getElementById(section);
-    const navbarHeight = document.querySelector('nav').offsetHeight;
-    const offsetTop = sectionElement.offsetTop - navbarHeight;
+    if (sectionElement) {
+      const navbarHeight = document.querySelector('nav').offsetHeight;
+      const offsetTop = sectionElement.offsetTop - navbarHeight;
 
-    window.scrollTo({
-      top: offsetTop,
-      behavior: 'smooth',
-    });
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
-    <Nav>
+    <Nav className={isScrolled ? 'scrolled' : ''}>
       <NavItems>
-        <Logo>RAVE</Logo>
-        <MenuItems>
+        <Logo onClick={() => handleClick('hero')}>RAVE</Logo>
+        <HamburgerIcon onClick={toggleMenu}>
+          {isOpen ? <FaTimes /> : <FaBars />}
+        </HamburgerIcon>
+        <MenuItems isOpen={isOpen}>
           <MenuItem
             className={`menu-item ${activeSection === 'hero' ? 'active' : ''}`}
             onClick={() => handleClick('hero')}

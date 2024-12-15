@@ -4,12 +4,15 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import UpcomingEvents from './components/UpcomingEvents';
 import FeaturedArtists from './components/FeaturedArtists';
+import Gallery from './components/Gallery'; // Import the Gallery component
+import About from './components/About';
+import Tickets from './components/Tickets';
 
 const AppContainer = styled.div`
   background-color: var(--color-primary);
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden; // Prevent horizontal scrolling
+  overflow-x: hidden;
 `;
 
 const Section = styled.section`
@@ -21,10 +24,9 @@ const Section = styled.section`
   align-items: center;
   position: relative;
   width: 100%;
-  max-width: 1440px; // Maximum width for very large screens
-  margin: 0 auto; // Center content horizontally
+  max-width: 1440px;
+  margin: 0 auto;
 
-  // Responsive breakpoints
   @media (max-width: 1200px) {
     min-height: auto;
     padding: 6rem 2rem;
@@ -39,21 +41,9 @@ const Section = styled.section`
   }
 `;
 
-const PlaceholderSection = styled(Section)`
-  background-color: ${({ bgColor }) => bgColor || 'var(--color-secondary)'};
-  color: white;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  text-align: center;
-
-  // Add responsive styles for placeholder sections
-  @media (max-width: 768px) {
-    min-height: 50vh;
-  }
-`;
-
 const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1200px; // Maximum content width
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 
@@ -82,21 +72,21 @@ function App() {
           <FeaturedArtists />
         </ContentWrapper>
       </Section>
-      <PlaceholderSection id="gallery" bgColor="var(--color-secondary)">
+      <Section id="gallery">
         <ContentWrapper>
-          Gallery (Coming Soon)
+          <Gallery />
         </ContentWrapper>
-      </PlaceholderSection>
-      <PlaceholderSection id="about" bgColor="var(--color-primary)">
+      </Section>
+      <Section id="about">
         <ContentWrapper>
-          About (Coming Soon)
+          <About />
         </ContentWrapper>
-      </PlaceholderSection>
-      <PlaceholderSection id="tickets" bgColor="var(--color-secondary)">
+      </Section>
+      <Section id="tickets">
         <ContentWrapper>
-          Tickets (Coming Soon)
+          <Tickets />
         </ContentWrapper>
-      </PlaceholderSection>
+      </Section>
     </AppContainer>
   );
 }

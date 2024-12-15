@@ -8,38 +8,34 @@ const Background = styled.div`
   overflow: hidden;
 `;
 
-const Circle = styled(motion.div)`
+const AnimatedGradient = styled(motion.div)`
   position: absolute;
-  background: radial-gradient(circle, 
-    ${props => props.color} 0%, 
-    rgba(0,0,0,0) 70%);
-  border-radius: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    var(--color-accent-1) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
+  animation: gradientAnimation 20s linear infinite;
+
+  @keyframes gradientAnimation {
+    0% {
+      transform: scale(0.8) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+      transform: scale(0.8) rotate(360deg);
+    }
+  }
 `;
 
 const AnimatedBackground = () => {
   return (
     <Background>
-      {[...Array(3)].map((_, i) => (
-        <Circle
-          key={i}
-          color={i === 0 ? 'var(--color-accent-1)' : 'var(--color-accent-2)'}
-          style={{
-            width: `${300 + i * 100}px`,
-            height: `${300 + i * 100}px`,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            x: [0, 30, -30, 0],
-            y: [0, -30, 30, 0],
-          }}
-          transition={{
-            duration: 20 + i * 5,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-      ))}
+      <AnimatedGradient />
     </Background>
   );
 };
