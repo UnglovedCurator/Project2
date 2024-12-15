@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import AnimatedBackground from './AnimatedBackground';
 
 const HeroSection = styled.div`
   height: 100vh;
@@ -15,16 +16,17 @@ const HeroContent = styled(motion.div)`
   text-align: center;
   color: white;
   z-index: 1;
+  padding: 0 1rem;
 `;
 
 const Title = styled.h1`
-  font-size: 4rem;
+  font-size: clamp(2rem, 5vw, 4rem);
   margin-bottom: 1rem;
   color: var(--color-accent-1);
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2vw, 1.5rem);
   margin-bottom: 2rem;
 `;
 
@@ -42,8 +44,11 @@ const CTAButton = styled.button`
 `;
 
 const Hero = () => {
+  console.log('Hero component rendering'); // Debug log
+
   return (
     <HeroSection>
+      <AnimatedBackground />
       <HeroContent
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

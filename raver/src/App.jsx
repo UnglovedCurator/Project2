@@ -12,13 +12,13 @@ const AppContainer = styled.div`
 `;
 
 function App() {
+  console.log('App component rendering'); // Debug log
+
   return (
     <AppContainer>
       <GlobalStyles />
       <Navbar />
-      <Hero>
-        <AnimatedBackground /> {/* Add this inside Hero */}
-      </Hero>
+      <Hero />
       <UpcomingEvents />
       <FeaturedArtists />
     </AppContainer>
