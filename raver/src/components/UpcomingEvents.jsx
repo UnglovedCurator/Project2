@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useContentful } from '../ContentfulContext'; // Import the hook
+import { useContentful } from '../ContentfulContext';
 
 const EventsSection = styled.section`
   padding: 4rem 1rem;
@@ -92,7 +92,7 @@ const EventImage = styled.img`
 `;
 
 const UpcomingEvents = () => {
-  const { events } = useContentful(); // Get events from Contentful
+  const { events } = useContentful();
 
   return (
     <EventsSection>
@@ -109,7 +109,6 @@ const UpcomingEvents = () => {
             transition={{ delay: index * 0.1 }}
             whileHover={{ scale: 1.02 }}
           >
-            {/* Add an image if available in your Contentful model */}
             {event.image && (
               <EventImage src={event.image} alt={event.title} />
             )}
@@ -124,7 +123,6 @@ const UpcomingEvents = () => {
             </p>
             <p>{event.location}</p>
             <p className="description">{event.description}</p>
-            {/* Add a "Read More" button or link to a dedicated event page */}
             <ReadMoreButton
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

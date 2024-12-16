@@ -69,7 +69,7 @@ const CloseButton = styled.button`
 `;
 
 const Gallery = () => {
-  const { galleryImages } = useContentful(); // Get gallery images from Contentful
+  const { galleryImages } = useContentful();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const openLightbox = (imageUrl) => {
@@ -88,7 +88,7 @@ const Gallery = () => {
       <GalleryGrid>
         {galleryImages.map((image, index) => (
           <GalleryImage
-            key={index}
+            key={index} // Use index as key
             src={image}
             alt={`Gallery Image ${index + 1}`}
             onClick={() => openLightbox(image)}

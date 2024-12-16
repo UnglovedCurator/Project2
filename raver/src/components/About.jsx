@@ -77,33 +77,22 @@ const About = () => {
 
   return (
     <AboutSection>
-      <SectionTitle>
-        About <span>Us</span>
-      </SectionTitle>
-      <AboutContent>
-        {/* Render your main about content here */}
-        {aboutContent?.mainContent && (
-          <div
-            dangerouslySetInnerHTML={{ __html: aboutContent.mainContent }}
-          />
-        )}
+      {/* ... */}
 
-        {/* Example team section (if applicable) */}
-        {aboutContent?.teamMembers && (
-          <>
-            <h3>Meet the Team</h3>
-            <TeamMembers>
-              {aboutContent.teamMembers.map((member) => (
-                <TeamMemberCard key={member.name}>
-                  <img src={member.photo} alt={member.name} />
-                  <h4>{member.name}</h4>
-                  <p>{member.role}</p>
-                </TeamMemberCard>
-              ))}
-            </TeamMembers>
-          </>
-        )}
-      </AboutContent>
+      {aboutContent?.teamMembers && (
+        <>
+          <h3>Meet the Team</h3>
+          <TeamMembers>
+            {aboutContent.teamMembers.map((member) => (
+              <TeamMemberCard key={member.name}> {/* Assuming 'name' is unique */}
+                <img src={member.photo} alt={member.name} />
+                <h4>{member.name}</h4>
+                <p>{member.role}</p>
+              </TeamMemberCard>
+            ))}
+          </TeamMembers>
+        </>
+      )}
     </AboutSection>
   );
 };
