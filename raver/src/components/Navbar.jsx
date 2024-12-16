@@ -47,7 +47,7 @@ const MenuItems = styled.div`
   gap: 2rem;
 
   @media (max-width: 768px) {
-    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+    display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
     flex-direction: column;
     position: absolute;
     top: 100%;
@@ -222,14 +222,14 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
-  return (
+    return (
     <Nav className={isScrolled ? 'scrolled' : ''}>
       <NavItems>
         <Logo onClick={() => handleClick('hero')}>RAVE</Logo>
         <HamburgerIcon onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </HamburgerIcon>
-        <MenuItems isOpen={isOpen}>
+        <MenuItems $isOpen={isOpen}> {/* Changed isOpen to $isOpen */}
           <MenuItem
             className={`menu-item ${activeSection === 'hero' ? 'active' : ''}`}
             onClick={() => handleClick('hero')}

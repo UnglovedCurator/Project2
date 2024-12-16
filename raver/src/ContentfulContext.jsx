@@ -7,6 +7,7 @@ export const useContentful = () => useContext(ContentfulContext);
 
 export const ContentfulProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [heroContent, setHeroContent] = useState(null);
   const [events, setEvents] = useState([]);
   const [artists, setArtists] = useState([]);
@@ -14,36 +15,43 @@ export const ContentfulProvider = ({ children }) => {
   const [aboutContent, setAboutContent] = useState(null);
   const [ticketTiers, setTicketTiers] = useState([]);
 
+  const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
+  const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
+
   const client = createClient({
-    space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
-    accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN,
+    space: spaceId,
+    accessToken: accessToken,
   });
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch Hero content
+        // Fetch hero content
         const heroResponse = await client.getEntries({
-          content_type: 'hero', // Replace with your Hero content type ID
-          limit: 1, // Assuming you only have one Hero entry
+          content_type: 'hero',
+          limit: 1,
         });
         if (heroResponse.items.length) {
           setHeroContent(heroResponse.items[0].fields);
         }
 
-        // Fetch Events
+        // Fetch events
         const eventsResponse = await client.getEntries({
-          content_type: 'event', // Replace with your Event content type ID
+          content_type: 'event',
         });
         setEvents(
           eventsResponse.items.map((item) => ({
             ...item.fields,
             id: item.sys.id,
-            image: item.fields.image?.fields.file.url, // Get image URL
+            image: item.fields.image?.fields?.file?.url || null,
+            location: item.fields.location ? {
+              lat: parseFloat(item.fields.location.lat),
+              lng: parseFloat(item.fields.location.lon)
+            } : null
           }))
         );
 
-        // Fetch Artists
+        // Fetch artists
         const artistsResponse = await client.getEntries({
           content_type: 'artist',
         });
@@ -51,47 +59,56 @@ export const ContentfulProvider = ({ children }) => {
           artistsResponse.items.map((item) => ({
             ...item.fields,
             id: item.sys.id,
-            image: item.fields.image?.fields.file.url,
+            image: item.fields.image?.fields?.file?.url || null,
           }))
         );
 
-        // Fetch Gallery Images
+        // Fetch gallery images
         const galleryResponse = await client.getEntries({
           content_type: 'galleryImage',
         });
         setGalleryImages(
-          galleryResponse.items.map(
-            (item) => item.fields.image?.fields.file.url
-          )
+          galleryResponse.items
+            .map((item) => item.fields.image?.fields?.file?.url || null)
+            .filter(Boolean)
         );
 
-        // Fetch About content
+        // Fetch about content
         const aboutResponse = await client.getEntries({
           content_type: 'about',
+          include: 2,
         });
+
         if (aboutResponse.items.length) {
-          // Assuming team members are references
-          const teamMembers = aboutResponse.items[0].fields.teamMembers
-            ? await Promise.all(
-                aboutResponse.items[0].fields.teamMembers.map(
-                  async (memberRef) => {
-                    const member = await client.getEntry(memberRef.sys.id);
-                    return {
-                      ...member.fields,
-                      photo: member.fields.photo?.fields.file.url,
-                    };
-                  }
-                )
-              )
-            : [];
+          const aboutData = aboutResponse.items[0].fields;
+          let teamMembers = [];
+
+          if (Array.isArray(aboutData.teamMembers)) {
+            teamMembers = await Promise.all(
+              aboutData.teamMembers.map(async (memberRef) => {
+                try {
+                  if (!memberRef.sys?.id) return null;
+                  const member = await client.getEntry(memberRef.sys.id);
+                  return {
+                    ...member.fields,
+                    photo: member.fields.photo?.fields?.file?.url || null,
+                  };
+                } catch (err) {
+                  console.error('Error fetching team member:', err);
+                  return null;
+                }
+              })
+            );
+            teamMembers = teamMembers.filter(Boolean);
+          }
 
           setAboutContent({
-            ...aboutResponse.items[0].fields,
+            ...aboutData,
             teamMembers,
           });
         }
 
-        // Fetch Ticket Tiers
+        // Fetch ticket tiers
         const ticketsResponse = await client.getEntries({
           content_type: 'ticketTier',
         });
@@ -99,10 +116,15 @@ export const ContentfulProvider = ({ children }) => {
           ticketsResponse.items.map((item) => ({
             ...item.fields,
             id: item.sys.id,
+            benefits: Array.isArray(item.fields.benefits) 
+              ? item.fields.benefits 
+              : item.fields.benefits?.split(',').map(benefit => benefit.trim()) || [],
           }))
         );
+
       } catch (error) {
         console.error('Error fetching Contentful data:', error);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -111,19 +133,30 @@ export const ContentfulProvider = ({ children }) => {
     fetchContent();
   }, []);
 
+  // Add data validation before rendering
+  const validateData = (data) => {
+    if (!data) return false;
+    if (typeof data === 'object' && Object.keys(data).length === 0) return false;
+    return true;
+  };
+
+  if (error) {
+    return <div>Error loading content: {error.message}</div>;
+  }
+
   const value = {
     loading,
-    heroContent,
-    events,
-    artists,
-    galleryImages,
-    aboutContent,
-    ticketTiers,
+    heroContent: validateData(heroContent) ? heroContent : null,
+    events: validateData(events) ? events : [],
+    artists: validateData(artists) ? artists : [],
+    galleryImages: validateData(galleryImages) ? galleryImages : [],
+    aboutContent: validateData(aboutContent) ? aboutContent : null,
+    ticketTiers: validateData(ticketTiers) ? ticketTiers : [],
   };
 
   return (
     <ContentfulContext.Provider value={value}>
-      {children}
+      {loading ? <div>Loading...</div> : children}
     </ContentfulContext.Provider>
   );
 };

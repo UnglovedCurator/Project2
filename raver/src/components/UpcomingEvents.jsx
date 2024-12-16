@@ -94,6 +94,17 @@ const EventImage = styled.img`
 const UpcomingEvents = () => {
   const { events } = useContentful();
 
+  const formatLocation = (location) => {
+    if (!location) return 'Location TBA';
+    if (typeof location === 'string') return location;
+    if (location.lat && location.lng) {
+      return `${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`;
+      // Alternatively, you could return a more user-friendly format:
+      // return `${location.name || 'Venue TBA'}`;
+    }
+    return 'Location TBA';
+  };
+
   return (
     <EventsSection>
       <SectionTitle>
@@ -110,7 +121,11 @@ const UpcomingEvents = () => {
             whileHover={{ scale: 1.02 }}
           >
             {event.image && (
-              <EventImage src={event.image} alt={event.title} />
+              <EventImage 
+                src={event.image} 
+                alt={event.title} 
+                loading="lazy"
+              />
             )}
             <h3>{event.title}</h3>
             <p>
@@ -121,8 +136,10 @@ const UpcomingEvents = () => {
                 day: 'numeric',
               })}
             </p>
-            <p>{event.location}</p>
-            <p className="description">{event.description}</p>
+            <p>{formatLocation(event.location)}</p>
+            <p className="description">
+              {event.description || 'No description available'}
+            </p>
             <ReadMoreButton
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
