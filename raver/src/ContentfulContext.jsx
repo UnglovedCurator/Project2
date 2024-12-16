@@ -18,6 +18,11 @@ export const ContentfulProvider = ({ children }) => {
   const spaceId = import.meta.env.VITE_CONTENTFUL_SPACE_ID;
   const accessToken = import.meta.env.VITE_CONTENTFUL_ACCESS_TOKEN;
 
+  if (!spaceId || !accessToken) {
+    console.error('Missing Contentful configuration');
+    return <div>Error: Missing Contentful configuration</div>;
+  }  
+
   const client = createClient({
     space: spaceId,
     accessToken: accessToken,
