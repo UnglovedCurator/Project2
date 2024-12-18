@@ -16,7 +16,7 @@ const AppContainer = styled.div`
 `;
 
 const Section = styled.section`
-  padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 5vw, 3rem);
+  /* Removed the padding here */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -29,17 +29,9 @@ const Section = styled.section`
 
   @media (max-width: 1200px) {
     min-height: auto;
-    padding: 6rem 2rem;
-  }
-
-  @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
-  }
-
-  @media (max-width: 480px) {
-    padding: 3rem 1rem;
   }
 `;
+
 
 const ContentWrapper = styled.div`
   width: 100%;
@@ -51,6 +43,7 @@ const ContentWrapper = styled.div`
     padding: 0 0.5rem;
   }
 `;
+
 
 function App() {
   return (
@@ -68,9 +61,7 @@ function App() {
         </ContentWrapper>
       </Section>
       <Section id="artists">
-        <ContentWrapper>
-          <FeaturedArtists />
-        </ContentWrapper>
+        <FeaturedArtists />
       </Section>
       <Section id="gallery">
         <ContentWrapper>
