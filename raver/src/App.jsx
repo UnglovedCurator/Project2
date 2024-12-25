@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import UpcomingEvents from './components/UpcomingEvents';
 import FeaturedArtists from './components/FeaturedArtists';
-import Gallery from './components/Gallery'; // Import the Gallery component
+import Gallery from './components/Gallery';
 import About from './components/About';
 import Tickets from './components/Tickets';
 
@@ -16,34 +16,29 @@ const AppContainer = styled.div`
 `;
 
 const Section = styled.section`
-  /* Removed the padding here */
-  min-height: 100vh;
+  min-height: 50vh; // Reduced from 100vh to decrease vertical spacing
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
+  padding: 2rem 0; // Added padding top and bottom instead of using min-height
 
   @media (max-width: 1200px) {
     min-height: auto;
+    padding: 1.5rem 0;
   }
 `;
-
 
 const ContentWrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 2rem;
 
   @media (max-width: 768px) {
-    padding: 0 0.5rem;
+    padding: 0 1rem;
   }
 `;
-
 
 function App() {
   return (
@@ -61,7 +56,9 @@ function App() {
         </ContentWrapper>
       </Section>
       <Section id="artists">
-        <FeaturedArtists />
+        <ContentWrapper>
+          <FeaturedArtists />
+        </ContentWrapper>
       </Section>
       <Section id="gallery">
         <ContentWrapper>

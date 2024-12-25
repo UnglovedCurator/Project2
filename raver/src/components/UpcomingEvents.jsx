@@ -3,152 +3,160 @@ import { motion } from 'framer-motion';
 import { useContentful } from '../ContentfulContext';
 
 const EventsSection = styled.section`
-  padding: 4rem 1rem;
-  background: linear-gradient(
-    0deg,
-    var(--color-primary) 0%,
-    var(--color-secondary) 100%
-  );
-`;
-
-const EventsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
   padding: 2rem 0;
 `;
 
-const EventCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 1.5rem;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  color: white;
-  font-family: 'Rajdhani', sans-serif;
-
-  &:hover {
-    border-color: var(--color-accent-1);
-    transform: translateY(-5px);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-  }
-
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-
-  p {
-    margin-bottom: 0.3rem;
-  }
-
-  .description {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-  }
+const EventsContainer = styled.div`
+  width: 100%;
+  max-width: 100%;
+  padding: 0 2rem;
 `;
 
-const SectionTitle = styled.h2`
-  text-align: center;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+const Title = styled.h2`
   color: white;
   font-size: 2.5rem;
-  margin-bottom: 2rem;
-  font-family: 'Rajdhani', sans-serif;
   font-weight: 700;
+  margin-right: 1rem;
+  font-family: 'Rajdhani', sans-serif;
 
   span {
     color: var(--color-accent-1);
   }
 `;
 
-const ReadMoreButton = styled(motion.button)`
-  background: transparent;
-  border: 2px solid var(--color-accent-1);
-  color: var(--color-accent-1);
-  padding: 0.5rem 1rem;
+const EventsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const EventItem = styled(motion.div)`
+  display: grid;
+  grid-template-columns: 120px minmax(200px, 300px) auto 120px;
+  align-items: center;
+  padding: 1.5rem;
   border-radius: 4px;
-  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  font-family: 'Rajdhani', sans-serif;
+  transition: all 0.3s ease;
 
   &:hover {
-    background: var(--color-accent-1);
-    color: black;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-accent-1);
+    transform: translateY(-2px);
   }
 `;
 
-const EventImage = styled.img`
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 1rem;
+const DateInfo = styled.div`
+  color: white;
+  font-family: 'Rajdhani', sans-serif;
+  
+  .month {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-accent-1);
+    text-transform: uppercase;
+  }
+  
+  .day {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .year {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
 `;
+
+const EventInfo = styled.div`
+  color: white;
+  font-family: 'Rajdhani', sans-serif;
+  text-align: left;
+  
+  .event-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+`;
+
+const MoreInfoButton = styled.button`
+  color: white;
+  background: transparent;
+  border: none;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  cursor: pointer;
+  text-align: right;
+  padding-right: 1rem;
+  font-family: 'Rajdhani', sans-serif;
+  
+  &:hover {
+    opacity: 1;
+    color: var(--color-accent-1);
+  }
+`;
+
+const formatLocation = (location) => {
+  if (!location) return 'Location TBA';
+  if (typeof location === 'string') return location;
+  if (location.lat && location.lng) {
+    return 'Location TBA';
+  }
+  return 'Location TBA';
+};
 
 const UpcomingEvents = () => {
   const { events } = useContentful();
 
-  const formatLocation = (location) => {
-    if (!location) return 'Location TBA';
-    if (typeof location === 'string') return location;
-    if (location.lat && location.lng) {
-      return `${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`;
-      // Alternatively, you could return a more user-friendly format:
-      // return `${location.name || 'Venue TBA'}`;
-    }
-    return 'Location TBA';
-  };
-
   return (
     <EventsSection>
-      <SectionTitle>
-        Upcoming <span>Events</span>
-      </SectionTitle>
-      <EventsGrid>
-        {events.map((event, index) => (
-          <EventCard
-            key={event.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            whileHover={{ scale: 1.02 }}
-          >
-            {event.image && (
-              <EventImage 
-                src={event.image} 
-                alt={event.title} 
-                loading="lazy"
-              />
-            )}
-            <h3>{event.title}</h3>
-            <p>
-              {new Date(event.date).toLocaleDateString('en-US', {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </p>
-            <p>{formatLocation(event.location)}</p>
-            <p className="description">
-              {event.description || 'No description available'}
-            </p>
-            <ReadMoreButton
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Read More
-            </ReadMoreButton>
-          </EventCard>
-        ))}
-      </EventsGrid>
+      <EventsContainer>
+        <Header>
+          <Title>
+            Upcoming <span>Events</span>
+          </Title>
+        </Header>
+        <EventsList>
+          {events.map((event, index) => {
+            const date = new Date(event.date);
+            return (
+              <EventItem
+                key={event.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <DateInfo>
+                  <div className="month">
+                    {date.toLocaleString('en-US', { month: 'short' })}
+                  </div>
+                  <div className="day">
+                    {date.getDate()}
+                  </div>
+                  <div className="year">
+                    {date.getFullYear()}
+                  </div>
+                </DateInfo>
+                <EventInfo>
+                  <div className="event-name">{event.title}</div>
+                </EventInfo>
+                <MoreInfoButton>+ MORE INFO</MoreInfoButton>
+              </EventItem>
+            );
+          })}
+        </EventsList>
+      </EventsContainer>
     </EventsSection>
   );
 };

@@ -225,7 +225,7 @@ const Navbar = () => {
     return (
     <Nav className={isScrolled ? 'scrolled' : ''}>
       <NavItems>
-        <Logo onClick={() => handleClick('hero')}>RAVE</Logo>
+        <Logo onClick={() => handleClick('hero')}>Resebyrån</Logo>
         <HamburgerIcon onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}
         </HamburgerIcon>

@@ -8,7 +8,9 @@ const ArtistsSection = styled.section`
   padding: 4rem 0;
   background: transparent;
   position: relative;
-  width: 100%;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
   overflow: hidden;
 `;
 
@@ -29,9 +31,9 @@ const CarouselContainer = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
-  max-width: 1400px;
+  max-width: 100vw;
   margin: 0 auto;
-  padding: 0 1rem; // Add minimal padding for edge spacing
+  padding: 0 1rem;
 `;
 
 const ArtistsCarousel = styled(motion.div)`
@@ -55,11 +57,11 @@ const ArtistCard = styled(motion.div)`
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   flex: 0 0 auto;
-  width: 300px; // Fixed width instead of percentage
+  width: 300px;
   aspect-ratio: 0.75;
   
   @media (max-width: 640px) {
-    width: calc(50% - 0.5rem); // Only use percentage at mobile for 2-card minimum
+    width: calc(50% - 0.5rem);
   }
 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
